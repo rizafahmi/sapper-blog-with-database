@@ -1,26 +1,27 @@
 import { connect, getPosts } from './_database.js';
-import posts from './_posts.js';
+// import posts from './_posts.js';
 
-const contents = JSON.stringify(
-  posts.map((post) => {
-    return {
-      title: post.title,
-      slug: post.slug
-    };
-  })
-);
+// const contents = JSON.stringify(
+//   posts.map((post) => {
+//     return {
+//       title: post.title,
+//       slug: post.slug
+//     };
+//   })
+// );
 
 export async function get(req, res) {
   const db = connect();
   try {
     const posts = await db.any(`SELECT * FROM posts`);
-    console.log(posts);
+    res.writeHead(200, {
+      'Content-Type': 'application/json'
+    });
+
+    res.end(JSON.stringify(posts));
   } catch (err) {
     console.error(err);
+    res.writeHead(500, { 'Content-Type': 'application/json' });
+    res.send({ err });
   }
-  res.writeHead(200, {
-    'Content-Type': 'application/json'
-  });
-
-  res.end(contents);
 }
