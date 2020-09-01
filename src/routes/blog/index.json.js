@@ -1,18 +1,8 @@
 import { connect, getPosts } from './_database.js';
-// import posts from './_posts.js';
-
-// const contents = JSON.stringify(
-//   posts.map((post) => {
-//     return {
-//       title: post.title,
-//       slug: post.slug
-//     };
-//   })
-// );
 
 export async function get(req, res) {
-  const db = connect();
   try {
+    const db = connect();
     const posts = await db.any(`SELECT * FROM posts`);
     res.writeHead(200, {
       'Content-Type': 'application/json'
